@@ -21,13 +21,13 @@ import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.location.Location
 import android.os.BatteryManager
-import androidx.preference.PreferenceManager
 import android.util.Log
+import androidx.preference.PreferenceManager
 import kotlin.math.abs
 
 abstract class PositionProvider(
     protected val context: Context,
-    protected val listener: PositionListener,
+    protected val listener: PositionListener
 ) {
 
     interface PositionListener {
@@ -48,9 +48,11 @@ abstract class PositionProvider(
 
     protected fun processLocation(location: Location?) {
         if (location != null &&
-            (lastLocation == null || location.time - lastLocation!!.time >= interval || distance > 0
-                    && location.distanceTo(lastLocation) >= distance || angle > 0
-                    && abs(location.bearing - lastLocation!!.bearing) >= angle)
+            (
+                lastLocation == null || location.time - lastLocation!!.time >= interval || distance > 0 &&
+                    location.distanceTo(lastLocation) >= distance || angle > 0 &&
+                    abs(location.bearing - lastLocation!!.bearing) >= angle
+                )
         ) {
             Log.i(TAG, "location new")
             lastLocation = location
@@ -74,5 +76,4 @@ abstract class PositionProvider(
         private val TAG = PositionProvider::class.java.simpleName
         const val MINIMUM_INTERVAL: Long = 1000
     }
-
 }

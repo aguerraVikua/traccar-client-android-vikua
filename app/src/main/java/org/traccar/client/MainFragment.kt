@@ -257,12 +257,15 @@ class MainFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeListene
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
                 alarmManager.setInexactRepeating(
                     AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                    ALARM_MANAGER_INTERVAL.toLong(), ALARM_MANAGER_INTERVAL.toLong(), alarmIntent
+                    ALARM_MANAGER_INTERVAL.toLong(),
+                    ALARM_MANAGER_INTERVAL.toLong(),
+                    alarmIntent
                 )
             }
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
-                && ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q &&
+                ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED
+            ) {
                 requestingPermissions = true
                 showBackgroundLocationDialog(requireContext()) {
                     requestPermissions(arrayOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION), PERMISSIONS_REQUEST_BACKGROUND_LOCATION)
@@ -326,5 +329,4 @@ class MainFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeListene
         private const val PERMISSIONS_REQUEST_LOCATION = 2
         private const val PERMISSIONS_REQUEST_BACKGROUND_LOCATION = 3
     }
-
 }

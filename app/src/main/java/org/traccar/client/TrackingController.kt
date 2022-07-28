@@ -16,16 +16,16 @@
 package org.traccar.client
 
 import android.content.Context
-import org.traccar.client.ProtocolFormatter.formatRequest
-import org.traccar.client.RequestManager.sendRequestAsync
-import org.traccar.client.PositionProvider.PositionListener
-import org.traccar.client.NetworkManager.NetworkHandler
 import android.os.Handler
 import android.os.Looper
-import androidx.preference.PreferenceManager
 import android.util.Log
+import androidx.preference.PreferenceManager
 import org.traccar.client.DatabaseHelper.DatabaseHandler
+import org.traccar.client.NetworkManager.NetworkHandler
+import org.traccar.client.PositionProvider.PositionListener
+import org.traccar.client.ProtocolFormatter.formatRequest
 import org.traccar.client.RequestManager.RequestHandler
+import org.traccar.client.RequestManager.sendRequestAsync
 
 class TrackingController(private val context: Context) : PositionListener, NetworkHandler {
 
@@ -94,26 +94,29 @@ class TrackingController(private val context: Context) : PositionListener, Netwo
         var formattedAction: String = action
         if (position != null) {
             formattedAction +=
-                    " (id:" + position.id +
-                    " time:" + position.time.time / 1000 +
-                    " lat:" + position.latitude +
-                    " lon:" + position.longitude + ")"
+                " (id:" + position.id +
+                " time:" + position.time.time / 1000 +
+                " lat:" + position.latitude +
+                " lon:" + position.longitude + ")"
         }
         Log.d(TAG, formattedAction)
     }
 
     private fun write(position: Position) {
         log("write", position)
-        databaseHelper.insertPositionAsync(position, object : DatabaseHandler<Unit?> {
-            override fun onComplete(success: Boolean, result: Unit?) {
-                if (success) {
-                    if (isOnline && isWaiting) {
-                        read()
-                        isWaiting = false
+        databaseHelper.insertPositionAsync(
+            position,
+            object : DatabaseHandler<Unit?> {
+                override fun onComplete(success: Boolean, result: Unit?) {
+                    if (success) {
+                        if (isOnline && isWaiting) {
+                            read()
+                            isWaiting = false
+                        }
                     }
                 }
             }
-        })
+        )
     }
 
     private fun read() {
@@ -139,34 +142,40 @@ class TrackingController(private val context: Context) : PositionListener, Netwo
 
     private fun delete(position: Position) {
         log("delete", position)
-        databaseHelper.deletePositionAsync(position.id, object : DatabaseHandler<Unit?> {
-            override fun onComplete(success: Boolean, result: Unit?) {
-                if (success) {
-                    read()
-                } else {
-                    retry()
+        databaseHelper.deletePositionAsync(
+            position.id,
+            object : DatabaseHandler<Unit?> {
+                override fun onComplete(success: Boolean, result: Unit?) {
+                    if (success) {
+                        read()
+                    } else {
+                        retry()
+                    }
                 }
             }
-        })
+        )
     }
 
     private fun send(position: Position) {
         log("send", position)
         val request = formatRequest(url, position)
-        sendRequestAsync(request, object : RequestHandler {
-            override fun onComplete(success: Boolean) {
-                if (success) {
-                    if (buffer) {
-                        delete(position)
-                    }
-                } else {
-                    StatusActivity.addMessage(context.getString(R.string.status_send_fail))
-                    if (buffer) {
-                        retry()
+        sendRequestAsync(
+            request,
+            object : RequestHandler {
+                override fun onComplete(success: Boolean) {
+                    if (success) {
+                        if (buffer) {
+                            delete(position)
+                        }
+                    } else {
+                        StatusActivity.addMessage(context.getString(R.string.status_send_fail))
+                        if (buffer) {
+                            retry()
+                        }
                     }
                 }
             }
-        })
+        )
     }
 
     private fun retry() {
@@ -182,5 +191,4 @@ class TrackingController(private val context: Context) : PositionListener, Netwo
         private val TAG = TrackingController::class.java.simpleName
         private const val RETRY_DELAY = 30 * 1000
     }
-
 }

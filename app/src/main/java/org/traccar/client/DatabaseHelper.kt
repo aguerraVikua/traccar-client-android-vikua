@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 @file:Suppress("DEPRECATION", "StaticFieldLeak")
+
 package org.traccar.client
 
 import android.content.ContentValues
@@ -55,17 +56,17 @@ class DatabaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(
             "CREATE TABLE position (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "deviceId TEXT," +
-                    "time INTEGER," +
-                    "latitude REAL," +
-                    "longitude REAL," +
-                    "altitude REAL," +
-                    "speed REAL," +
-                    "course REAL," +
-                    "accuracy REAL," +
-                    "battery REAL," +
-                    "mock INTEGER)"
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "deviceId TEXT," +
+                "time INTEGER," +
+                "latitude REAL," +
+                "longitude REAL," +
+                "altitude REAL," +
+                "speed REAL," +
+                "course REAL," +
+                "accuracy REAL," +
+                "battery REAL," +
+                "mock INTEGER)"
         )
     }
 
@@ -117,7 +118,7 @@ class DatabaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
                     course = cursor.getDouble(cursor.getColumnIndex("course")),
                     accuracy = cursor.getDouble(cursor.getColumnIndex("accuracy")),
                     battery = cursor.getDouble(cursor.getColumnIndex("battery")),
-                    mock = cursor.getInt(cursor.getColumnIndex("mock")) > 0,
+                    mock = cursor.getInt(cursor.getColumnIndex("mock")) > 0
                 )
             }
         }
@@ -150,5 +151,4 @@ class DatabaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
         const val DATABASE_VERSION = 3
         const val DATABASE_NAME = "traccar.db"
     }
-
 }

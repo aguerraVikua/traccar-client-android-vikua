@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 @file:Suppress("DEPRECATION")
+
 package org.traccar.client
 
 import android.content.BroadcastReceiver
@@ -58,5 +59,4 @@ class NetworkManager(private val context: Context, private val handler: NetworkH
     companion object {
         private val TAG = NetworkManager::class.java.simpleName
     }
-
 }

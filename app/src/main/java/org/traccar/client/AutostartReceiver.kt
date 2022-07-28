@@ -28,5 +28,4 @@ class AutostartReceiver : WakefulBroadcastReceiver() {
             startWakefulForegroundService(context, Intent(context, TrackingService::class.java))
         }
     }
-
 }

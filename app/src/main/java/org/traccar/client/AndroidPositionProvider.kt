@@ -32,7 +32,11 @@ class AndroidPositionProvider(context: Context, listener: PositionListener) : Po
     override fun startUpdates() {
         try {
             locationManager.requestLocationUpdates(
-                    provider, if (distance > 0 || angle > 0) MINIMUM_INTERVAL else interval, 0f, this)
+                provider,
+                if (distance > 0 || angle > 0) MINIMUM_INTERVAL else interval,
+                0f,
+                this
+            )
         } catch (e: RuntimeException) {
             listener.onPositionError(e)
         }
@@ -49,15 +53,19 @@ class AndroidPositionProvider(context: Context, listener: PositionListener) : Po
             if (location != null) {
                 listener.onPositionUpdate(Position(deviceId, location, getBatteryLevel(context)))
             } else {
-                locationManager.requestSingleUpdate(provider, object : LocationListener {
-                    override fun onLocationChanged(location: Location) {
-                        listener.onPositionUpdate(Position(deviceId, location, getBatteryLevel(context)))
-                    }
+                locationManager.requestSingleUpdate(
+                    provider,
+                    object : LocationListener {
+                        override fun onLocationChanged(location: Location) {
+                            listener.onPositionUpdate(Position(deviceId, location, getBatteryLevel(context)))
+                        }
 
-                    override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
-                    override fun onProviderEnabled(provider: String) {}
-                    override fun onProviderDisabled(provider: String) {}
-                }, Looper.myLooper())
+                        override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
+                        override fun onProviderEnabled(provider: String) {}
+                        override fun onProviderDisabled(provider: String) {}
+                    },
+                    Looper.myLooper()
+                )
             }
         } catch (e: RuntimeException) {
             listener.onPositionError(e)
@@ -75,9 +83,8 @@ class AndroidPositionProvider(context: Context, listener: PositionListener) : Po
     private fun getProvider(accuracy: String?): String {
         return when (accuracy) {
             "high" -> LocationManager.GPS_PROVIDER
-            "low"  -> LocationManager.PASSIVE_PROVIDER
-            else   -> LocationManager.NETWORK_PROVIDER
+            "low" -> LocationManager.PASSIVE_PROVIDER
+            else -> LocationManager.NETWORK_PROVIDER
         }
     }
-
 }

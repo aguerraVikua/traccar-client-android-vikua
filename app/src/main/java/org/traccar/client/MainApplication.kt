@@ -15,14 +15,14 @@
  */
 package org.traccar.client
 
-import androidx.multidex.MultiDexApplication
 import android.annotation.TargetApi
+import android.app.Activity
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.Notification
 import android.graphics.Color
 import android.os.Build
-import android.app.Activity
+import androidx.multidex.MultiDexApplication
 
 open class MainApplication : MultiDexApplication() {
 
@@ -37,7 +37,9 @@ open class MainApplication : MultiDexApplication() {
     @TargetApi(Build.VERSION_CODES.O)
     private fun registerChannel() {
         val channel = NotificationChannel(
-            PRIMARY_CHANNEL, getString(R.string.channel_default), NotificationManager.IMPORTANCE_LOW
+            PRIMARY_CHANNEL,
+            getString(R.string.channel_default),
+            NotificationManager.IMPORTANCE_LOW
         )
         channel.lightColor = Color.GREEN
         channel.lockscreenVisibility = Notification.VISIBILITY_SECRET
@@ -49,5 +51,4 @@ open class MainApplication : MultiDexApplication() {
     companion object {
         const val PRIMARY_CHANNEL = "default"
     }
-
 }

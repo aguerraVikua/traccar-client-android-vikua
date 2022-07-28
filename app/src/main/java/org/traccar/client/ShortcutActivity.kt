@@ -76,25 +76,31 @@ class ShortcutActivity : AppCompatActivity() {
     }
 
     private fun sendAlarm() {
-        PositionProviderFactory.create(this, object : PositionListener {
-            override fun onPositionUpdate(position: Position) {
-                val preferences = PreferenceManager.getDefaultSharedPreferences(this@ShortcutActivity)
-                val request = formatRequest(preferences.getString(MainFragment.KEY_URL, null)!!, position, ALARM_SOS)
-                sendRequestAsync(request, object : RequestHandler {
-                    override fun onComplete(success: Boolean) {
-                        if (success) {
-                            Toast.makeText(this@ShortcutActivity, R.string.status_send_success, Toast.LENGTH_SHORT).show()
-                        } else {
-                            Toast.makeText(this@ShortcutActivity, R.string.status_send_fail, Toast.LENGTH_SHORT).show()
+        PositionProviderFactory.create(
+            this,
+            object : PositionListener {
+                override fun onPositionUpdate(position: Position) {
+                    val preferences = PreferenceManager.getDefaultSharedPreferences(this@ShortcutActivity)
+                    val request = formatRequest(preferences.getString(MainFragment.KEY_URL, null)!!, position, ALARM_SOS)
+                    sendRequestAsync(
+                        request,
+                        object : RequestHandler {
+                            override fun onComplete(success: Boolean) {
+                                if (success) {
+                                    Toast.makeText(this@ShortcutActivity, R.string.status_send_success, Toast.LENGTH_SHORT).show()
+                                } else {
+                                    Toast.makeText(this@ShortcutActivity, R.string.status_send_fail, Toast.LENGTH_SHORT).show()
+                                }
+                            }
                         }
-                    }
-                })
-            }
+                    )
+                }
 
-            override fun onPositionError(error: Throwable) {
-                Toast.makeText(this@ShortcutActivity, error.message, Toast.LENGTH_LONG).show()
+                override fun onPositionError(error: Throwable) {
+                    Toast.makeText(this@ShortcutActivity, error.message, Toast.LENGTH_LONG).show()
+                }
             }
-        }).requestSingleLocation()
+        ).requestSingleLocation()
     }
 
     private fun executeAction(intent: Intent): Boolean {
