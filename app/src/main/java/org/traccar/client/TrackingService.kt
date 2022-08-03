@@ -33,6 +33,8 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
+import com.vikua.tracker.BuildConfig
+import com.vikua.tracker.R
 
 class TrackingService : Service() {
 

@@ -21,6 +21,7 @@ import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
+import com.vikua.tracker.R
 import java.text.DateFormat
 import java.util.*
 

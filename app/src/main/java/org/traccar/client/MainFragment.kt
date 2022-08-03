@@ -45,6 +45,8 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import androidx.preference.TwoStatePreference
+import com.vikua.tracker.BuildConfig
+import com.vikua.tracker.R
 import dev.doubledot.doki.ui.DokiActivity
 import java.util.*
 import kotlin.collections.HashSet

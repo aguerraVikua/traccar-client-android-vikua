@@ -17,6 +17,7 @@ package org.traccar.client
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.vikua.tracker.R
 
 class MainActivity : AppCompatActivity() {
 

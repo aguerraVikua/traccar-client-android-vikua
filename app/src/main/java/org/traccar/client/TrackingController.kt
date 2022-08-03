@@ -20,6 +20,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.preference.PreferenceManager
+import com.vikua.tracker.R
 import org.traccar.client.DatabaseHelper.DatabaseHandler
 import org.traccar.client.NetworkManager.NetworkHandler
 import org.traccar.client.PositionProvider.PositionListener

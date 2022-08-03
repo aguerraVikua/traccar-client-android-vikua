@@ -26,6 +26,7 @@ import android.provider.Settings
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.PreferenceManager
 import com.judemanutd.autostarter.AutoStartPermissionHelper
+import com.vikua.tracker.R
 
 class BatteryOptimizationHelper {
 

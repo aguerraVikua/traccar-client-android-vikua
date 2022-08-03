@@ -23,6 +23,7 @@ import android.app.NotificationManager
 import android.graphics.Color
 import android.os.Build
 import androidx.multidex.MultiDexApplication
+import com.vikua.tracker.R
 
 open class MainApplication : MultiDexApplication() {
 
