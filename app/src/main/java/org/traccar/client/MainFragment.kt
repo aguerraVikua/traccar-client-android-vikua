@@ -225,7 +225,7 @@ class MainFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeListene
         findPreference<Preference>(KEY_DEVICE)?.summary = sharedPreferences.getString(KEY_DEVICE, null)
     }
 
-    private fun showBackgroundLocationDialog(context: Context, onSuccess: () -> Unit) {
+    private fun showBackgroundLocationDialog(context: Context, onSuccess: () -> Unit, onCancel: () -> Unit) {
         val builder = AlertDialog.Builder(context)
         val option = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             context.packageManager.backgroundPermissionOptionLabel
@@ -234,7 +234,7 @@ class MainFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeListene
         }
         builder.setMessage(context.getString(R.string.request_background, option))
         builder.setPositiveButton(android.R.string.ok) { _, _ -> onSuccess() }
-        builder.setNegativeButton(android.R.string.cancel, null)
+        builder.setNegativeButton(android.R.string.cancel) { _, _ -> onCancel()}
         builder.show()
     }
 
@@ -265,13 +265,24 @@ class MainFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeListene
                 )
             }
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q &&
-                ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED
+            if (
+                ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
             ) {
                 requestingPermissions = true
-                showBackgroundLocationDialog(requireContext()) {
-                    requestPermissions(arrayOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION), PERMISSIONS_REQUEST_BACKGROUND_LOCATION)
-                }
+                showBackgroundLocationDialog(
+                    requireContext(),
+                    onSuccess =  {
+                        requestPermissions(arrayOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION), PERMISSIONS_REQUEST_BACKGROUND_LOCATION)
+                    },
+                    onCancel = {
+                        sharedPreferences.edit().putBoolean(KEY_STATUS, false).apply()
+                        val preference = findPreference<TwoStatePreference>(KEY_STATUS)
+                        preference?.isChecked = false
+                    }
+                    )
             } else {
                 requestingPermissions = BatteryOptimizationHelper().requestException(requireContext())
             }

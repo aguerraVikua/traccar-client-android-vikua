@@ -9,8 +9,8 @@ android {
         buildConfigField 'boolean', 'HIDDEN_APP', 'false'
         minSdkVersion 16
         targetSdkVersion 32
-        versionCode 78
-        versionName '6.17'
+        versionCode 80
+        versionName '1.0.0'
         multiDexEnabled true
     }
     namespace 'com.vikua.tracker'
